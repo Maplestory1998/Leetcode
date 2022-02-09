@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int strToInt(string str) {
+        int n = str.size();
+        int idx = 0;
+        //丢弃空格
+        while(str[idx] == ' ')
+            idx++;
+        
+        //查看符号
+        bool flag = true;
+        if(str[idx] == '-' || str[idx] == '+')
+        {
+            if(str[idx] == '-')
+                flag = false;
+            idx++;
+        }
+
+        if(!isdigit(str[idx]))
+            return 0;
+        
+        //解析数字
+        int ret = 0;
+        while(idx < n && isdigit(str[idx]))
+        {
+            if(ret > INT_MAX / 10)
+            {
+                return flag? INT_MAX : INT_MIN;
+            }
+            else if(ret == INT_MAX / 10)
+            {
+                if(str[idx] - '0' >= 7 && flag)
+                    return INT_MAX;
+                else if(str[idx] - '0' >= 8 && !flag)
+                    return INT_MIN;
+            }
+            ret = ret * 10 + (str[idx++] - '0');
+        }
+        return flag? ret: -ret;
+
+    }
+};
